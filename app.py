@@ -1,16 +1,31 @@
-import os
-
-from flask import Flask
+from flask import Flask, request, abort, Response
+from container import user_request
+from marshmallow_dataclass import class_schema
+from models import RequestArgs
 
 app = Flask(__name__)
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "data")
 
 
-@app.post("/perform_query")
-def perform_query():
-    # нужно взять код из предыдущего ДЗ
-    # добавить команду regex
-    # добавить типизацию в проект, чтобы проходила утилиту mypy app.py
-    return app.response_class('', content_type="text/plain")
+@app.route("/perform_query/", methods=['POST'])
+def perform_query() -> Response:
+
+    args = request.values
+    RequestSchema = class_schema(RequestArgs)
+
+
+    try:
+        request_args = RequestSchema().load(args)
+        result = user_request.execute(request_args)
+
+    except Exception as e:
+        abort(400)
+
+
+    if not result:
+        abort(404)
+
+    return app.response_class(result, content_type="text/plain")
+
+if __name__ == '__main__':
+    app.run()
