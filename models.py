@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 import marshmallow
 
-
 @dataclass
 class RequestArgs:
     cmd_1: str = field(metadata={'data_key': 'cmd1'})

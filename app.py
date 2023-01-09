@@ -5,14 +5,11 @@ from models import RequestArgs
 
 app = Flask(__name__)
 
-
-
 @app.route("/perform_query/", methods=['POST'])
 def perform_query() -> Response:
 
     args = request.values
     RequestSchema = class_schema(RequestArgs)
-
 
     try:
         request_args = RequestSchema().load(args)
@@ -20,7 +17,6 @@ def perform_query() -> Response:
 
     except Exception as e:
         abort(400)
-
 
     if not result:
         abort(404)

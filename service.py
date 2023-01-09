@@ -22,7 +22,6 @@ class FileService:
 
         self._result = filter(lambda x: bool(re_validator.search(x)), data)
 
-
     def map(self, column: str) -> None:
         data = self._get_source()
 
