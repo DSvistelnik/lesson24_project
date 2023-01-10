@@ -22,17 +22,17 @@ class FileService:
 
         self._result = filter(lambda x: bool(re_validator.search(x)), data)
 
-    def map(self, column: str) -> None:
+    def map(self, value: str) -> None:
         data = self._get_source()
 
         try:
-            column = int(column)
+            column = int(value)
         except ValueError:
             column = 0
 
         self._result = map(lambda x: x.split(' ')[column] + '\n', data)
 
-    def unique(self, value: Optional[Any]=None) -> None:
+    def unique(self, value: Optional[Any] = None) -> None:
 
         data = self._get_source()
 
